@@ -387,7 +387,9 @@ fase3()
     'Visual Studio Code'
     'php7'
     'Terminator'
+    'Zsh'
     'VirtualBox'
+    'Team Viewer'
     'Gnome Discos'
     'Breeze Cursors'
     'Temas'
@@ -409,6 +411,11 @@ fase3()
     echo -e "${msg_ate_breve}"
     log_concluindo
     exit 0
+}
+
+fase4()
+{
+    # Remover programas que considero desnecessários.
 }
 #------------------------------------------------------------------------------>
 
