@@ -231,16 +231,16 @@ fase1()
     # Seta o espelho
     espelho=${base}
     
-    # Download do mz python3 - v1.0.1
-    pacotes=('mz') 
-    download
+    # Download do mz python3 - v1.0.1.1
+    wget https://raw.githubusercontent.com/mazonos/mz/master/mz
+    echo "[ "$(date)" ] FASE ${fase}: Download do pacote mz." >> ${arquivo_log} #
 
     # Permite a execução do mz 
     chmod +x mz 
 
     # Substitui o mz atual    
     mv -v mz /sbin/mz 
-    echo "[ "$(date)" ] FASE ${fase}: Pacote mz python3 - v1.0.2 instalado." >> ${arquivo_log} # Grava log
+    echo "[ "$(date)" ] FASE ${fase}: Pacote mz python3 - v1.0.1.1 instalado." >> ${arquivo_log} # Grava log
   
     # Atualiza o python e seus módulos
     cd /usr/bin
@@ -410,6 +410,9 @@ fase3()
     'Breeze Cursors'
     'Temas'
     'Fontes Ubuntu Studio + Microsoft'
+    'Shell-Base'
+    'Filezilla (desinstalar o atual e instalar o novo)'
+    
     )
     
     # Download dos pacotes da fase
