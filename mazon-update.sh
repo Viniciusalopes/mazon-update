@@ -58,6 +58,9 @@ msg_reiniciar=' Reiniciar agora? [s/N]: '
 msg_ate_breve=' OK.\n Até breve!'
 
 msg_continuar=' Deseja continuar? [s/N]: '
+
+msg_atualizar=' Deseja atualizar agora? [s/N] '
+
 #           ******************************************************************************* 
 msg_fase_1=' Este script vai fazer as segiuntes modificações no seu sistema:
  - Atualizar os módulos do python3
@@ -281,9 +284,22 @@ fase1()
     # Instala os pacotes da fase
     instala
     
-    # Atualiza o menu do GRUB com o novo kernel
-    grub-mkconfig -o /boot/grub/grub.cfg
+    echo -e "${msg_atencao} Você precisa atualizar o menu do GRUB para utilizar o kernel instalado."
+    echo -e ' Recomendo atualizar agora nos seguintes casos:
+ - Se você utiliza apenas a Mazon Os em seu computador;
+ - Se tem mais de um sistema operacional mas o GRUB é gerenciado pela Mazon Os.
 
+ Caso o GRUB seja gerenciado por outro sistema operacional, atualize-o por ele.'
+
+    read -ep "${msg_atualizar}" -n 1
+    
+    case "$REPLY" in
+	# Atualiza o menu do GRUB com o novo kernel
+        s|S) grub-mkconfig -o /boot/grub/grub.cfg ;;
+        *) echo -e 'OK. Continuando...' ;;
+    esac
+    exit 0
+    
     log_concluindo
 
     # Incrementa para iniciar da fase 2 no próximo boot
