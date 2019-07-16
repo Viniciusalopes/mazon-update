@@ -432,6 +432,7 @@ fase3()
 fase4()
 {
     # Remover programas que considero desnecessários.
+    exit 0
 }
 #------------------------------------------------------------------------------>
 
