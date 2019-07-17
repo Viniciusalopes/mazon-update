@@ -264,11 +264,11 @@ fase1()
     
     # Download e permissões do bananapkg
     git clone https://github.com/slackjeff/bananapkg
-    chmod +x bananapkg/install.sh
+    cd bananapkg
+    chmod +x install.sh
 
     # Instalação do Banana do Jeff XD
-    cd bananapkg
-    bash bananapkg/install.sh
+    sh install.sh
     cd ${temp_dir}
     
     # Seta os pacotes da fase
