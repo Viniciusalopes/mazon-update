@@ -264,7 +264,7 @@ fase1()
     
     # Download e permissões do bananapkg
     git clone https://github.com/slackjeff/bananapkg
-    chmod +x install.sh
+    chmod +x bananapkg/install.sh
 
     # Instalação do Banana do Jeff XD
     cd bananapkg
