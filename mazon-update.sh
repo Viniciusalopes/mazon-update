@@ -252,8 +252,12 @@ fase1()
 
     mz           # Atualiza modulos do python para o mz
     mz u         # Atualiza a lista de pacotes
-    mz i banana  # Instala o banana do Jeff XD
 
+    # Instala o banana do Jeff XD
+    git clone https://github.com/slackjeff/bananapkg
+    chmod +x bananapkg/install.sh
+    bash bananapkg/install.sh
+    
     # Seta os pacotes da fase
     pacotes=(
         'mkinitramfs-1.0-1.mz'
