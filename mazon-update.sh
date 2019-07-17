@@ -141,7 +141,7 @@ prepara()
     cria_dir
 
     # Entra no diretório temporário
-    cd ${temp_dir}
+    cd ${dir}
     pwd
     sleep 2.5s  # Para conferir visualmente no console
 }
@@ -157,7 +157,7 @@ cria_dir()
 # Download dos pacotes da fase
 download()
 {
-    cd "${temp_dir}"
+    cd ${temp_dir}
     for pacote in "${pacotes[@]}"; do                # Para cada pacote da fase
         if [[ -e "${temp_dir}/${pacote}" ]]; then    # Verifica se o pacote já foi baixado
             echo -e ">>> ${pacote} já foi baixado."  # Exibe na tela que já foi
@@ -261,10 +261,15 @@ fase1()
     if [[ -d ${temp_dir}/bananapkg ]]; then
         rm -rfv bananapkg
     fi
-
+    
+    # Download e permissões do bananapkg
     git clone https://github.com/slackjeff/bananapkg
-    chmod +x bananapkg/install.sh
+    chmod +x install.sh
+
+    # Instalação do Banana do Jeff XD
+    cd bananapkg
     bash bananapkg/install.sh
+    cd ${temp_dir}
     
     # Seta os pacotes da fase
     pacotes=(
