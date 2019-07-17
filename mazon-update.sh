@@ -29,6 +29,9 @@ set -e
 
 #--------VÁRIAVEIS------------------------------------------------------------->
 
+# Diretório de passagem
+dir=''
+
 # Diretorio de trabalho
 temp_dir='/tmp/mazon-update'
 
@@ -133,8 +136,9 @@ atualiza_fase()
 # Preparação do ambiente
 prepara()
 {
-    # Cria o dir temporária
-    cria_dir_temp
+    # Cria o dir temporário
+    dir=${temp_dir}
+    cria_dir
 
     # Entra no diretório temporário
     cd ${temp_dir}
@@ -144,11 +148,10 @@ prepara()
 
 
 # Cria o dir de trabalho
-cria_dir_temp()
+cria_dir()
 {
-    if ! [[ -d "${temp_dir}" ]]; then    # Se não existir o dir
-        mkdir -v "${temp_dir}"           # Cria o dir
-    fi
+    # Se não existir o dir, cria-o-o
+    [[ ! -d "${dir}" ]] && mkdir -v "${dir}" || echo -e "${dir} já existe."
 }
 
 # Download dos pacotes da fase
@@ -246,7 +249,8 @@ fase1()
     cd /usr/bin
     mv -v python python.old
     ln -sv python3 python
-    cd ~
+    cd ${temp_dir}
+    
     echo "Aguarde alguns instantes, este processo pode demorar..."
     pip3 install --upgrade pip
 
@@ -254,6 +258,10 @@ fase1()
     mz u         # Atualiza a lista de pacotes
 
     # Instala o banana do Jeff XD
+    if [[ -d ${temp_dir}/bananapkg ]]; then
+        rm -rfv bananapkg
+    fi
+
     git clone https://github.com/slackjeff/bananapkg
     chmod +x bananapkg/install.sh
     bash bananapkg/install.sh
