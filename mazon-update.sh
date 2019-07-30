@@ -38,10 +38,13 @@ temp_dir='/tmp/mazon-update'
 # Arquivo de log
 arquivo_log='/var/log/mazon-update.log'
 
-# Espelhos onde estão os pacotes
-base='http://vovolinux.com.br/vovomazon/packages/base/'
-xapp='http://vovolinux.com.br/vovomazon/packages/xapp/'
-extra='http://vovolinux.com.br/vovomazon/packages/extra/'
+#Espelhos onde estão os pacotes
+base='https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/base/'
+extra='https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/extra/'
+libraries='https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/libraries/'
+lib='http://mazonos.com/packages/lib/'
+network='https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/network/'
+xfce4='https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/xfce4/'
 
 # Flag para encerrar
 fase_final=3
@@ -247,8 +250,6 @@ fase1()
   
     # Atualiza o python e seus módulos
     cd /usr/bin
-    mv -v python python.old
-    ln -sv python3 python
     cd ${temp_dir}
     
     echo "Aguarde alguns instantes, este processo pode demorar..."
@@ -315,7 +316,7 @@ fase1()
         s|S) grub-mkconfig -o /boot/grub/grub.cfg ;;
         *) echo -e 'OK. Continuando...' ;;
     esac
-    exit 0
+
     
     log_concluindo
 
@@ -339,41 +340,77 @@ fase2()
     prepara
     
     # Seta o espelho
-    espelho=${xapp}
+    espelho=${libraries}
+
+    pacotes=(
+        'pulseaudio-12.2-1.mz'
+        'libdaemon-0.14-1.mz'
+        'libsamplerate-0.1.9-1.mz'
+        'libnsl-1.2.0-1.mz'
+        'talloc-2.1.14-1.mz'
+        'keybinder-3.0-1.mz'        
+    )
+    # Download dos pacotes da fase
+    download
+
+    # Instala os pacotes da fase
+    instala
+    
+    
+    espelho=${lib}
+    pacotes=(
+        'libtirpc-1.1.4-1.mz'    
+    )
+    download
+    instala
+    
+    espelho=${extra}
+    pacotes=(
+        'gvfs-1.36.2-1.mz'
+        'keyutils-1.5.10-1.mz'
+    )
+    download
+    instala
+    
+    
+    espelho=${base}
+    pacotes=(
+        'networkmanager-1.12.2-1.mz'
+    )
+    download
+    instala
+    
+    
+    espelho=${network}
+    
+    pacotes=(
+        'krb5-1.16.1-1.mz'
+        'avahi-0.7-1.mz'
+        'openssh-7.7-1.mz'  
+        'samba-4.8.4-1.mz'
+    )
+    download
+    instala
+    
+    # Seta o espelho
+    espelho=${xfce4}
 
     # Seta os pacotes da fase
     pacotes=(
-        'xfce4_appfinder-4.12.0-1.mz'
+	'libxfce4ui-4.12.1-1.mz'        
+	'xfce4_appfinder-4.12.0-1.mz'
         'xfce4_panel-4.12.2-1.mz'
         'xfce4_power_manager-1.6.1-1.mz'    
         'xfce4_session-4.12.1-1.mz'
         'xfce4_settings-4.12.4-1.mz'
         'xfce4_terminal-0.8.7.4-1.mz'
         'xfce4_pulseaudio_plugin-0.4.0-1.mz'
-        'pulseaudio-12.2-1.mz'
-        'libkrb5-1.16.1-1.mz'
-        'libdaemon-0.14-1.mz'
-        'libxfce4ui-4.12.1-1.mz'
-        'libsamplerate-0.1.9-1.mz'
-        'libtirpc-1.0.3-1.mz'
-        'libnsl-1.2.0-1.mz'
-        'gvfs-1.36.2-1.mz'
-        'talloc-2.1.14-1.mz'
-        'keybinder-3.0-1.mz'        
-        'avahi-0.7-1.mz'
-        'keyutils-1.5.10-1.mz'
-        'samba-4.8.4-1.mz'           
         'thunar-1.7.0-1.mz'
-        'networkmanager-1.12.2-1.mz'
-        'openssh-7.7-1.mz'           
     )  
-     
-    # Download dos pacotes da fase
     download
-
-    # Instala os pacotes da fase
     instala
-
+    
+    
     # Cria o arquivo padrão do samba
     cp -v /etc/samba/smb.conf.default /etc/samba/smb.conf
     sleep 3.5s  # Para conferir visualmente no console
