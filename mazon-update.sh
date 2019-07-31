@@ -45,7 +45,7 @@ libraries='https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/
 lib='http://mazonos.com/packages/lib/'
 network='https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/network/'
 xfce4='https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/xfce4/'
-
+vovo='http://mazonos.com/vovo/packages/'
 # Flag para controle de fases
 fase=0
 
@@ -389,11 +389,14 @@ fase2()
     download
     instala
     
-    
+    espelho=${vovo}
+    pacotes=('libkrb5-1.16.1-1.mz')
+    download
+    instala
+
     espelho=${network}
-    
     pacotes=(
-        'krb5-1.16.1-1.mz'
+
         'avahi-0.7-1.mz'
         'openssh-7.7-1.mz'  
         'samba-4.8.4-1.mz'
@@ -457,6 +460,7 @@ fase3()
     # Seta os pacotes da fase
     
     pacotes=(
+	'sudo'
         'Google Chrome'
         'Thunderbird'
         'Gimp'
