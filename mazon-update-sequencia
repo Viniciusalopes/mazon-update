@@ -1,0 +1,31 @@
+- Menu-> Configurações-> Teclado-> Disposição
+    Excluir o teclado en_US
+
+- Executar o script
+  $ su -
+  # wget https://raw.githubusercontent.com/Viniciusalopes/mazon-update/master/mazon-update.sh
+  # sh mazon-update.sh
+  
+  Primeiro boot com X após a execução do script 
+    vovomazon [ ~ ]$ free -h
+    total       usada       livre    compart.  buff/cache  disponível
+    Mem.:         7.7Gi       288Mi       7.1Gi        80Mi       305Mi       7.1Gi
+    Swap:         4.0Gi          0B       4.0Gi
+
+- Menu-> Painel-> Adicionar novos itens-> Menu Whisker
+  Mover o Menu Whisker para a esquerda
+  Remover o Menu de aplicativos
+  Clique direito-> Propriedades
+    Icone -> Arquivos de Imagem-> /usr/share/icons/mazon/mazon-os_icon_grey.png
+    Comportamento->
+      Trocar categorias ao passar com o mouse
+      Posicionar pesquisa junto ao botão do painel
+      Posicionar categorias junto ao botão do painel
+
+- Menu-> Aparência-> Fontes->
+  Hinting: Completo
+  Ordem de subpixel: RGB
+
+- Menu-> Teclado-> Atalhos de aplicativos-> Adicionar->
+  xfce4-popup-whiskermenu (Super_L)
+  

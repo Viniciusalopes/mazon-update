@@ -46,6 +46,9 @@ lib='http://mazonos.com/packages/lib/'
 network='https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/network/'
 xfce4='https://vovolinux.com.br/vovomazon/packages/var/lib/mzphp/unreleased/xfce4/'
 
+# Flag para controle de fases
+fase=0
+
 # Flag para encerrar
 fase_final=3
 
@@ -68,17 +71,20 @@ msg_continuar=' Deseja continuar? [s/N]: '
 msg_atualizar=' Deseja atualizar agora? [s/N] '
 
 #           ******************************************************************************* 
-msg_fase_1=' Este script vai fazer as segiuntes modificações no seu sistema:
+msg_fase_1=" Você está na fase: 1.
+ Este script vai fazer as segiuntes modificações no seu sistema:
  - Atualizar os módulos do python3
  - Atualizar os programas: mz (mzsearch), mkinitramfs e o banana do Jeff  XD
- - Atualizar o kernel para versão 5.1.3\n'
+ - Atualizar o kernel para versão 5.1.3\n"
 
-msg_fase_2=' Este script vai fazer as segiuntes modificações no seu sistema:
+msg_fase_2=" Você está na fase: 2.
+ Este script vai fazer as segiuntes modificações no seu sistema:
  - Atualizar pacotes do xfce4;
  - Instalar recursos para redes com compartilhamento via samba;
- - Atualizar os pacotes: thunar, networkmanager, openssh e pulseaudio.\n'
+ - Atualizar os pacotes: thunar, networkmanager, openssh e pulseaudio.\n"
 
-msg_fase_3=' Este script vai instalar os seguintes aplicativos:
+msg_fase_3=" Você está na fase: 3.
+ Este script vai instalar os seguintes aplicativos:
  - Google Chrome, Thunderbird, Gimp, Inkscape, Kdenlive, Audacity, VLC,
    SimpleScreenRecorder, NetBeans, Visual Studio Code, php7, Terminator,
    VirtualBox e Gnome Discos.
@@ -87,7 +93,7 @@ msg_fase_3=' Este script vai instalar os seguintes aplicativos:
    e o tema de cursores Breeze.
 
  Mas não se preocupe! Será solicitada uma confirmação sua para cada programa,
- e você pode optar por não instalar um ou mais programas dessa lista.'
+ e você pode optar por não instalar um ou mais programas dessa lista."
 
 msg_atualizado=' \nSeu sistema está atualizado. Boa diversão!\n The FIM. =)\n'
 
@@ -112,18 +118,22 @@ log_concluindo()
 # Cria o arquivo com a flag da fase
 get_fase()
 {
+    if ! [[ -e ~/fase ]]; then    # Se não existir o arquivo com a flag da fase,
+        echo "1" > ~/fase         # Cria o arquivo com a fase 1
+        fase=1                    # Seta a flag da fase
+        echo "[ "$(date)" ] FASE ${fase}: Primeira execução." >> ${arquivo_log} # Grava log
+        echo 
+    else
+        fase=$(cat ~/fase)        # Obtem a fase atual do arquivo
+    fi
+    
     if [ "${kernel}" == "5.1.3-mzn" ]; then  # Verifica se o novo kernel já está instalado
-         echo "2" > ~/fase         # Pula a fase 1
-         fase=2
-         echo "[ "$(date)" ] FASE ${fase}: Kernel ${kernel} já está instalado." >> ${arquivo_log} # Grava log
-    else    
-        if ! [[ -e ~/fase ]]; then    # Se não existir o arquivo com a flag da fase,
-            echo "1" > ~/fase         # Cria o arquivo com a fase 1
-            fase=1                    # Seta a flag da fase
-            echo "[ "$(date)" ] FASE ${fase}: Primeira execução." >> ${arquivo_log} # Grava log
-            echo 
+        if [[ "${fase}" -eq 3 ]]; then
+            echo "[ "$(date)" ] FASE ${fase}: xfce4, samba, thunar, networkmanager, openssh e pulseaudio.estão atualizados." >> ${arquivo_log} # Grava log
         else
-            fase=$(cat ~/fase)        # Obtem a fase atual do arquivo
+            echo "2" > ~/fase         # Pula a fase 1
+            fase=2
+            echo "[ "$(date)" ] FASE ${fase}: Kernel ${kernel} já está instalado." >> ${arquivo_log} # Grava log
         fi
     fi
 }
@@ -188,8 +198,7 @@ executa()
 {
     # Obtém a fase atual    
     get_fase
-
-    if [ $((fase+1)) -gt $fase_final ]; then    # Se a fase atual é a última do script, já executou tudo.
+    if [ $((fase)) -gt $fase_final ]; then    # Se a fase atual é a última do script, já executou tudo.
         rm -f fase > /dev/null
         echo -e "${msg_atualizado}"
         exit 1
@@ -435,7 +444,9 @@ fase2()
 fase3()
 {
     # Incrementa para iniciar da fase 3
-
+    echo -e 'Fase em desenvolvimento'
+    exit 0
+    
     log_iniciando
     
     prepara
@@ -444,29 +455,52 @@ fase3()
     espelho=${extra}
 
     # Seta os pacotes da fase
-    pacotes=(
-    'Google Chrome'
-    'Thunderbird'
-    'Gimp'
-    'Inkscape'
-    'Kdenlive'
-    'Audacity'
-    'VLC'
-    'SimpleScreenRecorder'
-    'NetBeans'
-    'Visual Studio Code'
-    'php7'
-    'Terminator'
-    'Zsh'
-    'VirtualBox'
-    'Team Viewer'
-    'Gnome Discos'
-    'Breeze Cursors'
-    'Temas'
-    'Fontes Ubuntu Studio + Microsoft'
-    'Shell-Base'
-    'Filezilla (desinstalar o atual e instalar o novo)'
     
+    pacotes=(
+        'Google Chrome'
+        'Thunderbird'
+        'Gimp'
+        'Inkscape'
+        'Kdenlive'
+        'Audacity'
+        'VLC'
+        'SimpleScreenRecorder'
+        'NetBeans'
+        'Visual Studio Code'
+        'php7'
+        'Terminator'
+        'Zsh'
+        'VirtualBox'
+        'Team Viewer'
+        'Gnome Discos'
+        'Breeze Cursors'
+        'Temas'
+        'Fontes Ubuntu Studio + Microsoft'
+        'Shell-Base'
+        'Filezilla (desinstalar o atual e instalar o novo)'
+    )
+    pacotesMz=(
+        'http://mazonos.com/packages/extra/google_chrome-71.0.3578.98-1.mz'
+        'Thunderbird'
+        'Gimp'
+        'Inkscape'
+        'Kdenlive'
+        'Audacity'
+        'VLC'
+        'SimpleScreenRecorder'
+        'NetBeans'
+        'Visual Studio Code'
+        'php7'
+        'Terminator'
+        'Zsh'
+        'VirtualBox'
+        'Team Viewer'
+        'Gnome Discos'
+        'Breeze Cursors'
+        'Temas'
+        'Fontes Ubuntu Studio + Microsoft'
+        'Shell-Base'
+        'Filezilla (desinstalar o atual e instalar o novo)'
     )
     
     # Download dos pacotes da fase
